@@ -5,6 +5,7 @@ class Pares:
             
     def __lt__(self,outro):
         return self.chave < outro.chave
+    
     def __repr__(self):
             return self.carga
         
