@@ -11,3 +11,13 @@ def algoritiomoA(matrizLab, comeco, objetivo):
         estado = agenda.retiraPrimeiro()
         if estado == objetivo:
             return estado
+
+def heuristica (atual, objetivo):
+    x1=atual[0]
+    y1=atual[1]
+    x2=objetivo[0]
+    y2=objetivo[1]
+
+    dist = abs((x1-x2)) + abs((y1-y2))
+    
+    return dist
