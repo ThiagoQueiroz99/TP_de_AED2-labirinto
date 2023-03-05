@@ -34,12 +34,6 @@ class GeraLabirinto:
             primeira_coord = self.labirinto[metade_esq[0]][metade_esq[1]]
             segunda_coord = self.labirinto[metade_dir[0]][metade_dir[1]]
         return primeira_coord, segunda_coord
-    
-    def imprime_matriz(self, linhas, colunas):
-        for i in range(linhas):
-            for j in range(colunas):
-                print("%s " % self.labirinto[i][j], end = " ")
-            print()
         
     def insere_e_verifica_coords_na_lista(lista, i, j, x):
         area_valida = x
@@ -59,6 +53,12 @@ class GeraLabirinto:
             area_valida = True
         escavacao = random.randint(0, len(lista)-1)
         return lista_coords, lista_coords[escavacao], escavacao
+    
+    def imprime_matriz(self, linhas, colunas):
+        for i in range(linhas):
+            for j in range(colunas):
+                print("%s " % self.labirinto[i][j], end = " ")
+            print()
 
 if __name__ == "__main__":
     linhas = 11 + 2   #+2 sao as bordas, que fazem parte da matriz e limitam o conteudo      #as bordas ajudam na validacao de posicao
