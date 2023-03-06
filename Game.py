@@ -1,47 +1,38 @@
 import pygame
 from sys import exit
+import botao
+import geraLabirinto_13x15 as lab
 
 # Define as cores
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
 GRAY = ((127,127,127))
 
-TELA_JOGO_LARGURA = 500 
-TELA_JOGO_ALTURA = 500
+TELA_JOGO_LARGURA = 800
+TELA_JOGO_ALTURA = 600
 TAM_CEDULA = 40
 GAME_STATE = True
-# Define a matriz de testes
-# lab_teste = [
-#     [1, 1, 1, 1, 1],
-#     [0, 0, 1, 0, 1],
-#     [1, 1, 1, 1, 1],
-#     [0, 0, 1, 0, 1],
-#     [0, 0, 1, 0, 0]
-# ]
+
 # Gera lab.
-lab_teste = [
-    [2, 2, 2, 2, 2, 2, 2],
-    [2 ,1, 1, 1, 1, 1, 2],
-    [2 ,0, 0, 0, 0, 1, 2],
-    [2 ,0, 1, 1, 1, 1, 2],
-    [2 ,0, 0, 1, 0, 1, 2],
-    [2 ,0, 0, 1, 0, 0, 2],
-    [2, 2, 2, 2, 2, 2, 2]
-]
+matriz = lab.GeraLabirinto()
+coords = matriz.campos_iniciais(matriz.i_random, matriz.j_random, matriz.lista_coords)   #insere o primeiro ponto ma matriz #e insere os quatro primeiros corredores na lista
 # Gera qual a saida
-coord_saida = (5,3)
+coord_saida = matriz.escavacao_loop(matriz.i_random, matriz.j_random, matriz.lista_coords)    #enquanto lista nao estiver vazia fica em loop
+lab_teste = matriz.pega_matriz()
+
 # Resolução do lab.
 # Coordenadas do jogador
-player_x = 1
-player_y = 1
+player_x = coords[0]
+player_y = coords[1]
 
 pygame.init()
 clock = pygame.time.Clock()
-janela = pygame.display.set_mode((TELA_JOGO_ALTURA,TELA_JOGO_LARGURA))
-
+janela = pygame.display.set_mode((TELA_JOGO_LARGURA,TELA_JOGO_ALTURA))
+test_font = pygame.font.Font(None,50) # Fontes args(font type, font size)
+text_surface = test_font.render("GAME OVER", False, 'black').convert_alpha() # Cria uma superfice texto args(texto,antialiasing, cor)
+botao_restart = botao.Botao(600, 0, 100, 100, 'blue', 'Desistir')
 while True: # Fica rodando 
     # Processa eventos Verificar essa parte.
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -67,6 +58,9 @@ while True: # Fica rodando
                 print("GAME OVER")
                 GAME_STATE = False
 
+    # Posição do mouse na tela
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_click = pygame.mouse.get_pressed()
     if GAME_STATE:    
         janela.fill(PRETO)
 
@@ -83,10 +77,16 @@ while True: # Fica rodando
                 if lab_teste[linha][coluna] == 2:
                     pygame.draw.rect(janela, GRAY, (coluna*TAM_CEDULA, linha*TAM_CEDULA,TAM_CEDULA,TAM_CEDULA))
 
-        #Desenha o jogador
+        # Desenha o jogador
         pygame.draw.circle(janela,(255,0,0),(player_y*TAM_CEDULA+TAM_CEDULA//2, player_x*TAM_CEDULA+TAM_CEDULA//2),TAM_CEDULA//2)
+        # Desenha o botao
+        botao_restart.cria(janela)
+        # Verifica se foi clicado
+        if botao_restart.click(mouse_pos, mouse_click):
+            print("Algo")
     else:
         janela.fill("gray")
+        janela.blit(text_surface,(TELA_JOGO_LARGURA//2,TELA_JOGO_ALTURA//2))
         #print("GAME OVER")
 
     pygame.display.update()
