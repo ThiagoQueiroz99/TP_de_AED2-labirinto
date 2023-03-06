@@ -1,7 +1,7 @@
 class FilaDePrioridade:
     def __init__(self):
         self.fila = []
-
+        
     def inserir(self, elemento):
         if len(self.fila) == 0:
             self.fila.append(elemento)
@@ -23,7 +23,13 @@ class FilaDePrioridade:
             self.min_heapify(vetor, tam, menor)
 
     def retiraPrimeiro(self):
-        primeiro=self.fila[0]
+        primeiro = self.fila[0]
         self.fila.remove(self.fila[0])
         return primeiro
+
+    def aumentar_chave(self, pos, novo):
+        if (pos == len(self.fila)):
+            self.fila.append(novo)
+        else:
+            novo,self.fila[pos]=self.fila[pos],novo
 
